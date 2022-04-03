@@ -84,6 +84,7 @@ function response(
         "창체 줌 아이디는 903 671 6015 입니다. \n\n 비밀번호는 모두 동일하게 220301 입니다. \n (담임쌤) 줌이 없는 경우 담임교사가 별도공지"
       );
     }
+
     if (msg == "/시간표") {
       for (let i = 0; i < 5; i++) {
         replier.reply(day[i] + time[i]);
@@ -98,24 +99,57 @@ function response(
         .replace(/(<([^>]+)>)/g, "")
         .replace(/[\n\s]{2,}/g, "\n");
 
-      let notice2 = Utils.getWebText(
-        "https://duru.sjeduhs.kr/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000007621&menuId=MNU_0000000000013304&sso=ok"
-      )
-        .split("<tbody>")[2]
-        .split('<td class="tit">')[2]
-        .replace(/(<([^>]+)>)/g, "")
-        .replace(/[\n\s]{2,}/g, "\n");
-
-      let notice3 = Utils.getWebText(
-        "https://duru.sjeduhs.kr/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000007621&menuId=MNU_0000000000013304&sso=ok"
-      )
-        .split("<tbody>")[1]
-        .split('<td class="tit">')[1]
-        .replace(/(<([^>]+)>)/g, "")
-        .replace(/[\n\s]{2,}/g, "\n");
-      replier.reply(notice);
+      replier.reply(notice1);
     }
     if (msg == "/급식") {
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = today.getMonth();
+      let date = today.getDate() + 1;
+      month += 1;
+      month = String(month);
+      date = String(date);
+
+      if (month.length == 1) {
+        month = "0" + month;
+      }
+      if (date.length == 1) {
+        date = "0" + date;
+      }
+      let total = year + month + date;
+      let result = Utils.getWebText(
+        "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=4233b93265aa4c9ebdb908ae668dc818&Type=json&plndex=1&pSize=30&ATPT_OFCDC_SC_CODE=I10&SD_SCHUL_CODE=9300177&MLSV_YMD=" +
+          total,
+        false,
+        false
+      )
+        .split("<body>")[1]
+        .split("</body>")[0];
+      try {
+        calories = result.split('CAL_INFO":"')[1].split('","NTR_INFO')[0];
+        result = result
+          .split('","ORPLC')[0]
+          .split('"DDISH_NM":"')[1]
+          .replace(/(<([^>]+)>)/g, "");
+        result = result.replace(/amp;/gi, "");
+        result = result.replace(/undefined/gi, "");
+        result = result.replace(/\./gi, "");
+        result = result.replace(/\*/gi, "");
+
+        result = result.trim();
+        result = result.replace(/^ +/gm, "");
+
+        result = result.replace(/[0-9]/g, "");
+      } catch (e) {
+        replier.reply("급식 정보가 없습니다.");
+      }
+
+      result += "\n";
+      result += "총 ";
+      result += calories;
+      replier.reply(result);
+    }
+    if (msg == "/내일 급식") {
       let today = new Date();
       let year = today.getFullYear();
       let month = today.getMonth();
