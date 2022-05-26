@@ -22,7 +22,9 @@ function response(
   day = ["월 ", "화 ", "수 ", "목 ", "금 "];
   try {
     if (msg == "/시험") {
-      replier.reply("시험기간은 4/28 ~ 5/3, 범위는 추후 안내");
+      replier.reply(
+        "시험기간은 4/28 ~ 5/3 \n 국어 : 교과서 15p ~ 28p, 62p ~ 81p, 104p ~ 114p \n\n 수학 : 교과서 처음 ~ 삼,사차방정식(86p), 학습지 1번 ~ 18번 , 제공된 중단원 문제들 \n\n 영어 : 교과서 1~2과(57p), 부교재 지문  01~05(10~23p),2022 3평 모의고사 3,5,6,7p, 학습 유인물 \n\n 통합사회 : 일반사회: 5단원 ~ 5-2 시장 경제의 발전과 경제 주체의 역할까지 (모두 학습지 포함 이하 생략) \n 지리 : 2-1 자연 환경과 인간생활 (40p~53p) \n 윤리 : 1-2 행복의 의미와 기준(12p~24p) \n 역사 : 8단원 8-1 ~ 8-2 (244p~259p) \n\n 한국사 : 1단원 전근대 한국사의 이해 (10p~85p), 배움책 29p까지 \n\n 통합과학 : 물리 (90p~100p) (모두 학습지 포함 이하 생략) \n 화학 (30p~47p) \n지구과학 (0p~29p) \n 생명과학 (p68~p73, p146~p154)"
+      );
     }
     if (msg == "/국어") {
       replier.reply(
@@ -106,6 +108,7 @@ function response(
       let year = today.getFullYear();
       let month = today.getMonth();
       let date = today.getDate() + 1;
+      date += -1;
       month += 1;
       month = String(month);
       date = String(date);
@@ -154,7 +157,7 @@ function response(
       let year = today.getFullYear();
       let month = today.getMonth();
       let date = today.getDate() + 1;
-      date += 1; //이건 오늘 일욜이라서 그래요
+      //이건 오늘 일욜이라서 그래요
       month += 1;
       month = String(month);
       date = String(date);
